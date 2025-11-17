@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>مولد Gmail Aliases — Animated</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg1:#e9fff6; --bg2:#dffbf0; --accent1:#35c29b; --accent2:#76e8c8;
+      --card:#ffffff; --text:#04251d; --muted:#2b6b5a; --glass: rgba(255,255,255,0.75);
+      --radius:16px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:Inter,system-ui, -apple-system, 'Segoe UI', Roboto, Arial; background: radial-gradient(800px 400px at 10% 10%, rgba(117,209,179,0.14), transparent), linear-gradient(180deg,var(--bg1),var(--bg2)); color:var(--text); -webkit-font-smoothing:antialiased;}
+    .wrap{max-width:1150px;margin:28px auto;padding:20px;display:grid;grid-template-columns:1fr 420px;gap:26px}
+    header{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;gap:12px}
+    h1{margin:0;font-size:20px}
+    p.lead{margin:2px 0 0;color:var(--muted);font-size:13px}
+    .card{background:var(--card);border-radius:var(--radius);padding:18px;border:1px solid rgba(6,46,33,0.04);box-shadow:0 10px 30px rgba(6,46,33,0.06);overflow:hidden}
+    /* animated gradient header badge */
+    .badge{background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#022;display:inline-block;padding:6px 10px;border-radius:999px;font-weight:600;box-shadow:0 8px 20px rgba(53,194,155,0.14)}
+
+    /* form styling */
+    label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+    input,select,textarea,button{font-size:15px;padding:12px;border-radius:12px;border:1px solid rgba(6,46,33,0.06);background:transparent;color:var(--text);outline:none;transition:all .22s ease}
+    input:focus,select:focus,textarea:focus{transform:translateY(-3px);box-shadow:0 8px 20px rgba(117,209,179,0.12);border-color:rgba(53,194,155,0.25)}
+    .controls{display:flex;gap:10px;align-items:flex-end}
+    .small{width:140px}
+    .actions{display:flex;gap:10px;margin-top:10px}
+    .btn{cursor:pointer;padding:10px 14px;border-radius:12px;border:none;display:inline-flex;align-items:center;gap:10px}
+    .btn.primary{background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#04251d;font-weight:700;box-shadow:0 12px 30px rgba(53,194,155,0.12);transform:translateY(0);transition:transform .18s ease, box-shadow .18s ease}
+    .btn.primary:hover{transform:translateY(-4px);box-shadow:0 18px 42px rgba(53,194,155,0.18)}
+    .btn.ghost{background:transparent;border:1px solid rgba(6,46,33,0.06)}
+
+    textarea#out{height:260px;resize:vertical;border-radius:12px;padding:12px;line-height:1.5}
+
+    /* right panel 3D + particles */
+    #threebox{height:420px;border-radius:14px;overflow:hidden;background:linear-gradient(180deg,rgba(255,255,255,0.95),rgba(245,255,250,0.95));border:1px solid rgba(6,46,33,0.04);position:relative}
+    /* decorative floating circles */
+    .orb{position:absolute;border-radius:50%;filter: blur(20px);opacity:0.9;mix-blend-mode:multiply;animation:floaty 8s ease-in-out infinite}\n
+    @keyframes floaty{0%{transform:translateY(0)}50%{transform:translateY(-18px)}100%{transform:translateY(0)}}
+
+    .meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+    .chip{padding:6px 10px;background:linear-gradient(90deg, rgba(245,255,250,0.9), rgba(255,255,255,0.95));border-radius:999px;border:1px solid rgba(6,46,33,0.04);font-size:13px;color:var(--muted)}
+
+    /* alias pills interactivity */
+    .pill{display:inline-block;padding:8px 12px;border-radius:999px;background:rgba(53,194,155,0.08);margin:6px 6px 0 0;font-size:13px;color:var(--text);cursor:pointer;border:1px solid rgba(53,194,155,0.08);transition:transform .12s ease, box-shadow .12s ease}
+    .pill:hover{transform:translateY(-6px);box-shadow:0 10px 30px rgba(53,194,155,0.08)}
+
+    footer{grid-column:1/-1;margin-top:18px;color:var(--muted);font-size:13px;text-align:center}
+
+    /* small screens */
+    @media (max-width:980px){.wrap{grid-template-columns:1fr}.badge{display:none} #threebox{height:240px}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header style="align-items:center;">
+      <div>
+        <h1>مولد Gmail Aliases — نسخة أنيقـة ومتحركة</h1>
+        <p class="lead">واجهات ناعمة، تفاعلات سريعة، وتأثيرات ثلاثية الأبعاد خفيفة.</p>
+      </div>
+      <div style="text-align:left">
+        <span class="badge">نسخة متقدمة</span>
+      </div>
+    </header>
+
+    <main class="card" style="display:flex;flex-direction:column;gap:12px">
+      <div>
+        <label>الإيميل الأصلي (gmail.com أو googlemail.com)</label>
+        <input id="email" placeholder="example@gmail.com" />
+      </div>
+
+      <div style="display:flex;gap:10px;align-items:flex-end">
+        <div style="flex:1">
+          <label>عدد Dot-variants (حد أقصى 500)</label>
+          <input id="dotCount" type="number" min="1" max="500" value="30" />
+        </div>
+        <div style="width:160px">
+          <label>عدد +tags</label>
+          <input id="plusCount" type="number" min="0" max="500" value="12" />
+        </div>
+      </div>
+
+      <div>
+        <label>قائمة +tags مفصولة بفواصل (اختياري)</label>
+        <input id="tags" placeholder="shop,news,work" />
+      </div>
+
+      <div style="display:flex;gap:10px;align-items:center">
+        <label style="margin:0">توليد أرقام تلقائياً للـ +tags</label>
+        <select id="autoNum" style="width:140px">
+          <option value="yes">نعم</option>
+          <option value="no">لا</option>
+        </select>
+      </div>
+
+      <div class="actions">
+        <button id="generate" class="btn primary" title="Create aliases">✨ إنشاء</button>
+        <button id="copy" class="btn ghost" title="Copy all">نسخ الكل</button>
+        <button id="download" class="btn ghost" title="Download .txt">تحميل .txt</button>
+        <button id="downloadCSV" class="btn ghost" title="Download CSV">تحميل .csv</button>
+      </div>
+
+      <div>
+        <label>النتيجة</label>
+        <textarea id="out" readonly placeholder="النتيجة ستظهر هنا..."></textarea>
+      </div>
+
+      <div>
+        <label>معاينة سريعة (اضغط على أي عنوان لنسخه)</label>
+        <div id="preview" style="min-height:56px"></div>
+      </div>
+    </main>
+
+    <aside class="card" style="display:flex;flex-direction:column;gap:12px;align-items:stretch">
+      <div id="threebox"></div>
+
+      <div class="meta">
+        <div class="chip">Dot & Plus</div>
+        <div class="chip">Copy on click</div>
+        <div class="chip">CSV export</div>
+        <div class="chip">Responsive</div>
+      </div>
+
+      <div style="margin-top:8px;color:var(--muted);font-size:14px">
+        <strong>نصائح سريعة:</strong>
+        <ul style="margin:6px 0 0 18px;padding:0;color:var(--muted)">
+          <li>استخدم +tags لتعقب مصدر الرسائل.</li>
+          <li>النقاط مفيدة للعرض لكن Gmail يتجاهلها.</li>
+          <li>اضغط على أي عنوان لنسخه سريعاً.</li>
+        </ul>
+      </div>
+    </aside>
+
+    <footer>لو عايز تأثيرات أقوى أو نسخة موبايل مخصصة أعملها لك دلوقتي.</footer>
+  </div>
+
+  <!-- three.js + simple particles -->
+  <script src="https://unpkg.com/three@0.157.0/build/three.min.js"></script>
+  <script>
+    // Reusable generator functions (kept concise)
+    function isValidGmail(email){
+      const m = email.trim().toLowerCase().match(/^([a-z0-9._%+-]+)@((gmail|googlemail)\\.com)$/i);
+      return m ? {local:m[1],domain:m[2]} : null;
+    }
+    function generateDotVariants(localNoDots, domain, limit){
+      const base = localNoDots;
+      const n = base.length;
+      if(n<=1) return [base+'@'+domain];
+      const positions = n-1;
+      const maxComb = Math.pow(2, positions);
+      const set = new Set();
+      if(maxComb <= limit){
+        for(let mask=1;mask<maxComb;mask++){
+          let s = base[0];
+          for(let i=1;i<n;i++){ if(mask & (1<<(i-1))) s += '.'; s += base[i]; }
+          set.add(s + '@' + domain);
+        }
+      } else {
+        const attemptsLimit = limit*10; let attempts=0;
+        while(set.size < limit && attempts < attemptsLimit){
+          let mask = 0; for(let i=0;i<positions;i++){ if(Math.random() < 0.5) mask |= (1<<i); }
+          if(mask===0) mask=1;
+          let s = base[0];
+          for(let i=1;i<n;i++){ if(mask & (1<<(i-1))) s += '.'; s += base[i]; }
+          set.add(s + '@' + domain); attempts++;
+        }
+      }
+      return Array.from(set).sort();
+    }
+    function generatePlusVariants(localNoDots, domain, tagsStr, plusCount, autoNum){
+      const arr = []; const tags = tagsStr ? tagsStr.split(',').map(t=>t.trim()).filter(Boolean) : [];
+      for(const t of tags) arr.push(localNoDots + '+' + t + '@' + domain);
+      if(autoNum === 'yes'){ for(let i=1;i<=plusCount;i++) arr.push(localNoDots + '+' + i + '@' + domain); }
+      else if(tags.length === 0){ const defaults=['shop','news','work','test','noreply']; for(let i=0;i<Math.min(plusCount, defaults.length); i++) arr.push(localNoDots + '+' + defaults[i] + '@' + domain); }
+      return arr;
+    }
+
+    // UI logic
+    const outEl = document.getElementById('out'), preview = document.getElementById('preview');
+    document.getElementById('generate').addEventListener('click', ()=>{
+      const email = document.getElementById('email').value.trim(); const info = isValidGmail(email);
+      if(!info){ alert('أدخل إيميل Gmail صالح (gmail.com أو googlemail.com)'); return; }
+      const local = info.local, domain = info.domain, normalized = local.replace(/\\./g,'');
+      const dotCount = Math.max(1, Math.min(500, parseInt(document.getElementById('dotCount').value || '30')));
+      const plusCount = Math.max(0, Math.min(500, parseInt(document.getElementById('plusCount').value || '12')));
+      const tags = document.getElementById('tags').value.trim(); const autoNum = document.getElementById('autoNum').value;
+
+      const dotVariants = generateDotVariants(normalized, domain, dotCount);
+      const plusVariants = generatePlusVariants(normalized, domain, tags, plusCount, autoNum);
+      const original = normalized + '@' + domain; const combined = [original];
+      for(const d of dotVariants) if(!combined.includes(d)) combined.push(d);
+      for(const p of plusVariants) if(!combined.includes(p)) combined.push(p);
+
+      outEl.value = combined.join('\\n'); updatePreview(combined); updateThreeCount(combined.length);
+    });
+
+    function updatePreview(list){
+      preview.innerHTML='';
+      list.slice(0,12).forEach(a=>{
+        const el = document.createElement('span'); el.className='pill'; el.textContent = a;
+        el.title = 'اضغط لنسخ';
+        el.addEventListener('click', ()=>{ navigator.clipboard.writeText(a); el.animate([{transform:'translateY(0)'},{transform:'translateY(-6px)'},{transform:'translateY(0)'}],{duration:220}); });
+        preview.appendChild(el);
+      });
+      if(list.length>12){ const more = document.createElement('div'); more.style.marginTop='6px'; more.style.color='var(--muted)'; more.textContent = '... و ' + (list.length-12) + ' أكثر'; preview.appendChild(more); }
+    }
+
+    document.getElementById('copy').addEventListener('click', ()=>{
+      if(!outEl.value){ alert('لا توجد نتيجة لنسخها'); return; }
+      navigator.clipboard.writeText(outEl.value).then(()=>{ alert('تم النسخ'); });
+    });
+
+    function downloadText(filename, text){ const blob = new Blob([text],{type:'text/plain'}); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href=url; a.download=filename; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url); }
+
+    document.getElementById('download').addEventListener('click', ()=>{
+      if(!outEl.value){ alert('لا توجد نتيجة'); return; } downloadText('gmail_aliases.txt', outEl.value);
+    });
+    document.getElementById('downloadCSV').addEventListener('click', ()=>{
+      if(!outEl.value){ alert('لا توجد نتيجة'); return; }
+      const csv = outEl.value.split('\\n').map(r=>`"${r.replace(/"/g,'""')}"`).join('\\r\\n'); downloadText('gmail_aliases.csv', csv);
+    });
+
+    // Three.js scene with floating particles & dynamic label
+    (function(){
+      const container = document.getElementById('threebox'); const w = container.clientWidth, h = container.clientHeight;
+      const scene = new THREE.Scene(); const camera = new THREE.PerspectiveCamera(45, w/h, 0.1, 1000); camera.position.z = 3.2;
+      const renderer = new THREE.WebGLRenderer({alpha:true, antialias:true}); renderer.setSize(w,h); renderer.setPixelRatio(window.devicePixelRatio); container.appendChild(renderer.domElement);
+      const ambient = new THREE.AmbientLight(0xffffff, 0.9); scene.add(ambient);
+      const dir = new THREE.DirectionalLight(0xffffff, 0.6); dir.position.set(5,5,5); scene.add(dir);
+
+      // main rounded panel (simple box with bevel look)
+      const geo = new THREE.BoxGeometry(1.9,1.2,0.12, 32, 16, 2); const mat = new THREE.MeshStandardMaterial({metalness:0.2, roughness:0.25});
+      const panel = new THREE.Mesh(geo, mat); scene.add(panel);
+
+      // canvas texture for panel
+      const canvas = document.createElement('canvas'); canvas.width=1024; canvas.height=512; const ctx = canvas.getContext('2d');
+      function drawCanvas(count){
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        const g = ctx.createLinearGradient(0,0,canvas.width,canvas.height); g.addColorStop(0,'#35c29b'); g.addColorStop(1,'#76e8c8');
+        ctx.fillStyle = g; ctx.fillRect(0,0,canvas.width,canvas.height);
+        ctx.globalAlpha = 0.08; ctx.fillStyle = '#ffffff'; ctx.fillRect(40,40,canvas.width-80,canvas.height-80);
+        ctx.globalAlpha = 1; ctx.font = '120px serif'; ctx.textAlign='center'; ctx.fillStyle = 'rgba(255,255,255,0.95)'; ctx.fillText('@', canvas.width*0.28, canvas.height*0.6); ctx.fillText('+', canvas.width*0.72, canvas.height*0.6);
+        ctx.font = '28px serif'; ctx.fillStyle = 'rgba(2,34,26,0.85)'; ctx.fillText(count + ' aliases', canvas.width*0.5, canvas.height*0.92);
+      }
+      drawCanvas(0); const tex = new THREE.CanvasTexture(canvas); mat.map = tex; mat.needsUpdate = true;
+
+      // particles
+      const particles = new THREE.Group(); scene.add(particles);
+      const pGeo = new THREE.SphereGeometry(0.03, 8, 8); const pMat = new THREE.MeshStandardMaterial({emissive:0x35c29b, emissiveIntensity:0.6, color:0xffffff, roughness:0.9});
+      for(let i=0;i<22;i++){ const m = new THREE.Mesh(pGeo,pMat); m.position.set((Math.random()-0.5)*2.5, (Math.random()-0.5)*1.6, (Math.random()-0.5)*0.8); m.scale.setScalar(0.7+Math.random()*1.4); particles.add(m); }
+
+      let t=0; function animate(){ requestAnimationFrame(animate); t+=0.01; panel.rotation.y = Math.sin(t*0.6)*0.12; panel.rotation.x = Math.sin(t*0.3)*0.03; particles.children.forEach((c,i)=>{ c.position.y += Math.sin(t*0.7 + i)*0.002; c.rotation.y += 0.002*(i%3+1); }); renderer.render(scene,camera); }
+      animate();
+
+      window.updateThreeCount = function(count){ drawCanvas(count); tex.needsUpdate = true; panel.scale.set(0.95 + Math.min(1, count/180), 0.95 + Math.min(1, count/280), 0.95); }
+
+      window.addEventListener('resize', ()=>{ const w=container.clientWidth, h=container.clientHeight; renderer.setSize(w,h); camera.aspect = w/h; camera.updateProjectionMatrix(); });
+    })();
+  </script>
+
+  <!-- subtle decorative orbs -->
+  <div style="position:fixed;left:8%;top:12%;pointer-events:none;z-index:0">
+    <div class="orb" style="width:160px;height:160px;background:radial-gradient(circle,#35c29b55,#76e8c855);left:0"></div>
+  </div>
+</body>
+</html>
